@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Galería Profesional con Música</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #FFEBFC;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .gallery-item {
+            width: 250px;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 5px solid white;
+            box-sizing: border-box;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.5s ease;
+        }
+        
+        /* Modal CORREGIDO (arreglé el translate) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #FFEBFC;
+            overflow: auto;
+            animation: fadeIn 0.3s;
+        }
+        
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* ¡CORREGIDO! */
+            border: 10px solid white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+        
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #DF5B97;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .close:hover {
+            color: #000000;
+            transform: scale(1.1);
+        }
+        
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+        
+        img {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        img.loaded {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Reproductor oculto (sin controles) -->
+    <audio id="bgMusic" autoplay loop style="display:none;">
+        <source src="Porcelain.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Galería (funcionando como antes) -->
+    <div class="gallery">
+        <div class="gallery-item" onclick="openModal('https://i.ibb.co/SwvLYyZb/meraki.jpg')">
+            <img 
+                src="https://i.ibb.co/SwvLYyZb/meraki.jpg" 
+                alt="meraki" 
+                onload="this.classList.add('loaded')"
+                loading="lazy"
+            >
+        </div>
+    </div>
+
+    <!-- Modal (ahora centrado correctamente) -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <script>
+        // Música automática (con fallback para Chrome)
+        document.addEventListener('DOMContentLoaded', function() {
+            const bgMusic = document.getElementById('bgMusic');
+            bgMusic.volume = 0.3; // Volumen bajo por defecto
+            
+            bgMusic.play().catch(e => {
+                // Si falla, se activa con el primer click
+                document.addEventListener('click', () => bgMusic.play(), { once: true });
+            });
+            
+            // Precarga imágenes
+            document.querySelectorAll('img').forEach(img => {
+                if (img.complete) img.classList.add('loaded');
+            });
+        });
+
+        // Funciones ORIGINALES de la galería (sin cambios)
+        function openModal(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            
+            modal.style.display = "block";
+            modalImg.src = src;
+            
+            modal.onclick = function(e) {
+                if (e.target === modal) closeModal();
+            };
+            
+            document.onkeydown = function(e) {
+                if (e.key === "Escape") closeModal();
+            };
+        }
+        
+        function closeModal() {
+            document.getElementById('imageModal').style.display = "none";
+            document.onkeydown = null;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Servicios con Scroll Inicial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
+        }
+        
+        body {
+            background-image: url("fondo1.jpg");
+            background-size: 1367px 592px;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            /* Desactivo el scroll temporalmente hasta que JS lo ajuste */
+            overflow-y: hidden; 
+        }
+
+        /* Contenedor principal (con scroll) */
+        .contenido-servicios {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow-y: auto; /* Permite scroll */
+        }
+
+        /* [Tus estilos de servicios, descripciones y botones aquí...] */
+
+    </style>
+</head>
+<body>
+    <div class="contenido-servicios" id="contenedorScroll">
+        <!-- TODO tu contenido (servicios, descripciones, botones, etc.) -->
+    </div>
+
+    <script>
+        // ⚡ Cuando la página cargue, hacemos scroll automático a una posición específica
+        window.onload = function() {
+            // Ajusta este valor (en píxeles) para definir cuánto scroll inicial quieres
+            const scrollInicial = 500; // Ej: 500px hacia abajo
+            
+            // Hacemos el scroll automático
+            document.getElementById("contenedorScroll").scrollTo(0, scrollInicial);
+            
+            // Reactivamos el scroll suavemente
+            setTimeout(() => {
+                document.body.style.overflowY = "auto";
+            }, 100);
+        };
+    </script>
+</body>
+</html>
